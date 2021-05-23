@@ -1,6 +1,7 @@
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, Dimensions } from 'react-native';
 
-
+export const screenWidth = Dimensions.get('window').width;
+export const screenHeight = Dimensions.get('window').height;
 
 export default StyleSheet.create({
     container: {
@@ -10,38 +11,56 @@ export default StyleSheet.create({
     heading: {
         alignSelf: 'center',
         fontWeight: 'bold',
-        fontSize: 30
+        fontSize: 30,
+        marginTop: 10
     },
     innerContainer: {
         width: '90%',
-        height: 300,
-        backgroundColor: '#43adb5',
-        borderRadius: 20,
+        height: 100,
+        backgroundColor: 'rgba(0,0,0,0.1)',
+        borderRadius: 10,
         alignSelf: 'center',
-        marginTop: 40
+        marginTop: 10,
+        flexDirection: 'row',
+        marginBottom: 10
     },
     totalCount: {
         padding: 15,
         fontWeight: 'bold',
-        color: "#fff",
-        fontSize: 18
+        color: "#000",
+        fontSize: 18,
+        backgroundColor: '#fff'
     },
     box: {
-        flexDirection: 'row',
-        alignSelf: 'center',
-        marginTop: 100
+        marginTop: 20,
+        alignItems: 'center',
+        flex: 1
     },
     btn: {
-        width: 50,
+        width: 140,
         height: 50,
-        borderRadius: 50,
-        backgroundColor: 'white'
+        borderRadius: 10,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        alignContent: 'center',
+        alignItems: 'center'
     },
     btnTxt: {
-        alignSelf: 'center',
-        fontSize: 28,
+        fontSize: 15,
         fontWeight: 'bold',
-        marginTop: 2
+        marginTop: 2,
+        color: "#000",
     },
-
+    dropDownContainer: {
+        height: 40,
+        marginTop: 10,
+        borderRadius: 7,
+    },
+    dropDownItem: {
+        justifyContent: 'flex-start',
+    },
+    albumList: {
+        padding: 10,
+    },
 });
