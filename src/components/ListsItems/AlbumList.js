@@ -1,26 +1,36 @@
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity, View, Dimensions, } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, View, Dimensions, Image } from 'react-native';
 import Colors from '../../common/Colors';
 export const screenWidth = Dimensions.get('window').width;
 export const screenHeight = Dimensions.get('window').height;
 
 const AlbumList = (props) => {
     return (
-        <TouchableOpacity style={styles.container} onPress={props.onPress} >
+        <TouchableOpacity style={styles.container} onPress={props.onPress}
+            key={props.key}
+        >
             <View style={styles.containerView}>
+                <Image
+                    source={{ uri: props.item.thumbnailUrl }}
+                    resizeMode="cover"
+                    style={{
+                        height: 140,
+                        width: 140,
+                    }}
+                />
             </View>
             <View style={styles.mainView}>
                 <View style={{}}>
                     <Text style={styles.title}
                         numberOfLines={1}
-                    >{props.item.title} </Text>
+                    >{props.item.thumbnailUrl} </Text>
                 </View>
-                <View style={styles.subView}>
+                {/* <View style={styles.subView}>
                     <Text style={styles.description}>Album Owner: {props.item.owner} </Text>
                     <Text style={styles.description}>Email: {props.item.email} </Text>
                     <Text style={styles.description}>Website: {props.item.website} </Text>
 
-                </View>
+                </View> */}
             </View>
 
         </TouchableOpacity>

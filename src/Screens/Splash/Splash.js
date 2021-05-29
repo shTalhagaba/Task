@@ -17,10 +17,30 @@ class Splash extends React.Component {
     }
 
     componentDidMount() {
-        setTimeout(() => {
-            this.props.navigation.replace('Home')
-        }, 2000);
+        this.getAlbumList()
     }
+
+    getAlbumList = () => {
+
+        //var apiUrl = BASE_URL + getLanguages;
+        var apiUrl = "https://jsonplaceholder.typicode.com/albums";
+
+        fetch(apiUrl, { method: "GET" })
+            .then((response) => response.json())
+            .then((responseJson) => {
+
+                var languageArray = []
+                console.log("List : ", JSON.stringify(responseJson))
+                if (responseJson.length > 0) {
+                    setTimeout(() => {
+                        this.props.navigation.replace('Home', { albumList: responseJson })
+                    }, 1000);
+                }
+            })
+            .catch(
+                (error) => console.log(apiUrl + " dd" + error)
+            ); //to catch the errors if any
+    };
 
     render() {
         return (

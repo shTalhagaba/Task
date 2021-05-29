@@ -6,6 +6,7 @@ import {
     ScrollView,
     TouchableOpacity,
     FlatList,
+    ActivityIndicator,
 } from 'react-native';
 
 //Local imports
@@ -20,6 +21,7 @@ class Home extends React.Component {
         this.state = {
             count: 0,
             selected: '',
+            isLoading: true,
             albumList: [
                 {
                     icon: 'guitar',
@@ -97,9 +99,58 @@ class Home extends React.Component {
         }
     }
 
+
+
     onPressAlbumList(data) {
         this.props.navigation.navigate("AlbumView", { item: data })
     }
+
+    componentDidMount() {
+        var albumList = this.props.route.params.albumList
+        if (albumList.length > 0) {
+            this.getAlbumList()
+        }
+    }
+
+    getAlbumList = () => {
+        var albumList = this.props.route.params.albumList
+
+        //var apiUrl = BASE_URL + getLanguages;
+        var apiUrl = "https://jsonplaceholder.typicode.com/photos";
+
+        fetch(apiUrl, { method: "GET" })
+            .then((response) => response.json())
+            .then((responseJson) => {
+
+                var languageArray = []
+                console.log("List : ", JSON.stringify(responseJson))
+                if (responseJson.length > 0) {
+                    var languageArray = albumList
+                    albumList.map(itemValue => {
+                        responseJson.map(responseItem => {
+                            if (responseItem.albumId === itemValue.id) {
+                                languageArray.push({
+                                    userId: itemValue.userId,
+                                    id: itemValue.id,
+                                    title: itemValue.title,
+                                    photoTitle: responseItem.title,
+                                    url: responseItem.url,
+                                    thumbnailUrl: responseItem.thumbnailUrl
+                                });
+                            }
+                        })
+                    })
+                    alert(JSON.stringify(languageArray))
+                    this.setState({
+                        albumList: languageArray,
+                        isLoading: false
+                    })
+                }
+            })
+            .catch(
+                (error) => console.log(apiUrl + " dd" + error)
+            ); //to catch the errors if any
+    };
 
     render() {
         return (
@@ -121,18 +172,27 @@ class Home extends React.Component {
 
                 <ScrollView showsVerticalScrollIndicator={false}  >
 
-                    <View style={{ flex: 1, marginVertical: 10 }}>
-                        <FlatList
-                            style={styles.albumList}
-                            data={this.state.albumList}
-                            renderItem={({ item }) => (
-                                <AlbumList
-                                    item={item}
-                                    onPress={() => this.onPressAlbumList(item)}
-                                />
-                            )}
-                            keyExtractor={item => item.id}
-                        />
+                    <View style={{ flex: 1, marginVertical: 10, }}>
+                        {this.state.isLoading ?
+                            <ActivityIndicator
+                                style={{}}
+                                size={50}
+                                color={'red'}
+                            />
+                            :
+                            <FlatList
+                                style={styles.albumList}
+                                data={this.state.albumList}
+                                keyExtractor={(item, index) => String(index)}
+                                renderItem={({ item, index }) => (
+                                    <AlbumList
+                                        key={index}
+                                        item={item}
+                                        onPress={() => this.onPressAlbumList(item)}
+                                    />
+                                )}
+                            />
+                        }
                     </View>
 
                 </ScrollView>
